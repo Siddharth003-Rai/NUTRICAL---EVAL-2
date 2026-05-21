@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NUTRICAL – Nutrient Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-logo">NUTRI<span>CAL</span></div>
+    <ul class="nav-links">
+      <li><a href="#food-section">Food Search</a></li>
+      <li><a href="#plate-section">My Plate</a></li>
+      <li><a href="#bmi-section">BMI</a></li>
+      <li><a href="#hydration-section">Hydration</a></li>
+      <li><a href="#tips-section">Tips</a></li>
+    </ul>
+    <!-- Session greeting + logout (populated by JS) -->
+    <div id="nav-user" style="display:none;" class="nav-user-block">
+      <span id="nav-greeting"></span>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+    <a href="auth.html" id="nav-login-btn" class="btn btn-outline" style="font-size:0.85rem;padding:8px 18px;">Sign In</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="ABOVE-TEXT">
+    <div class="hero-badge">Your Personal Nutrition Assistant</div>
+    <h1>Know What You <span class="accent">Eat.</span><br/>Live Better.</h1>
+    <p>
+      Search any food item and instantly see calories, protein, carbs, and fats.
+      Track your meals. Calculate your BMI. Get practical health tips. Stay healthy!
+    </p>
+    <div class="hero-btns">
+      <a href="#food-section" class="btn btn-primary">Search Food</a>
+      <a href="#bmi-section"  class="btn btn-outline">Calculate BMI</a>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+
+    <!-- ══════════════════════════════════════
+         SECTION 1 – FOOD NUTRIENT SEARCH
+         ══════════════════════════════════════ -->
+    <section id="food-section">
+      <h2 class="section-title">🔍 Food Nutrient Search</h2>
+      <p class="section-subtitle">Type a food name to see its nutritional breakdown per 100g</p>
+
+      <div class="card">
+        <div class="search-row">
+          <div class="form-group">
+            <label for="food-input">Food Item Name</label>
+            <input
+              type="text"
+              id="food-input"
+              placeholder="e.g. banana, rice, chicken, egg..."
+              autocomplete="off"
+            />
+          </div>
+          <button class="btn btn-primary" onclick="searchFood()">Search</button>
+        </div>
+
+        <p id="error-msg">❌ Food not found. Try another name like "rice", "egg", "apple".</p>
+
+        <div id="result-box">
+          <h3 id="food-name-heading">–</h3>
+          <div class="nutrient-grid">
+            <div class="stat-box">
+              <div class="stat-value" id="cal-val">–</div>
+              <div class="stat-label">Calories (kcal)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="pro-val">–</div>
+              <div class="stat-label">Protein (g)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="carb-val">–</div>
+              <div class="stat-label">Carbs (g)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="fat-val">–</div>
+              <div class="stat-label">Fat (g)</div>
+            </div>
+          </div>
+          <p class="result-tip" id="food-tip">–</p>
+
+          <!-- FEATURE 2: Add to Plate button -->
+          <button class="btn btn-primary add-plate-btn" id="add-plate-btn" onclick="addToPlate()">
+            + Add to My Plate
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 2 – MY DAILY PLATE (Meal Tracker)
+         SYLLABUS: Higher-Order Functions (reduce), DOM Manipulation,
+                   Event Delegation, Destructuring
+         ══════════════════════════════════════ -->
+    <section id="plate-section">
+      <h2 class="section-title">🍽️ My Daily Plate</h2>
+      <p class="section-subtitle">Track every food you eat today — totals update automatically</p>
+
+      <div class="card">
+
+        <!-- Plate item list — Event Delegation: one listener on this parent handles all Delete clicks -->
+        <ul class="plate-list" id="plate-list">
+          <li class="plate-empty" id="plate-empty">
+            No items yet. Search for a food and click "Add to My Plate"!
+          </li>
+        </ul>
+
+        <!-- Totals bar — updated by reduce() -->
+        <div class="plate-totals" id="plate-totals" style="display:none;">
+          <h4 class="totals-heading">📊 Daily Totals</h4>
+          <div class="nutrient-grid">
+            <div class="stat-box">
+              <div class="stat-value" id="total-cal">0</div>
+              <div class="stat-label">Calories (kcal)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="total-pro">0</div>
+              <div class="stat-label">Protein (g)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="total-carb">0</div>
+              <div class="stat-label">Carbs (g)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="total-fat">0</div>
+              <div class="stat-label">Fat (g)</div>
+            </div>
+          </div>
+          <button class="btn btn-outline clear-plate-btn" onclick="clearPlate()">🗑️ Clear Plate</button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 3 – BMI CALCULATOR
+         ══════════════════════════════════════ -->
+    <section id="bmi-section">
+      <h2 class="section-title">⚖️ BMI Calculator</h2>
+      <p class="section-subtitle">Enter your height and weight to find your Body Mass Index</p>
+
+      <div class="card">
+        <div class="bmi-layout">
+          <div class="form-group">
+            <label for="weight-input">Weight (kg)</label>
+            <input type="number" id="weight-input" placeholder="e.g. 65" min="20" max="300"/>
+          </div>
+          <div class="form-group">
+            <label for="height-input">Height (cm)</label>
+            <input type="number" id="height-input" placeholder="e.g. 170" min="50" max="250"/>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="calculateBMI()">Calculate BMI</button>
+
+        <div id="bmi-result">
+          <div class="bmi-score" id="bmi-score">–</div>
+          <div class="bmi-category" id="bmi-category">–</div>
+          <p class="bmi-message" id="bmi-message">–</p>
+          <div class="bmi-bar-wrap mt-8">
+            <div class="bmi-bar-fill" id="bmi-bar" style="width:0%"></div>
+          </div>
+          <div class="bmi-legend">
+            <span>Underweight &lt;18.5</span>
+            <span>Normal 18.5–24.9</span>
+            <span>Overweight 25–29.9</span>
+            <span>Obese ≥30</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 4 – HYDRATION REMINDER
+         SYLLABUS: BOM Timers (setInterval), BOM alert(),
+                   Closures & Scope Rules
+         ══════════════════════════════════════ -->
+    <section id="hydration-section">
+      <h2 class="section-title">💧 Hydration Reminder</h2>
+      <p class="section-subtitle">Set a water reminder and track glasses drunk today</p>
+
+      <div class="card hydration-card">
+
+        <div class="hydration-top">
+          <!-- Interval selector -->
+          <div class="form-group" style="margin-bottom:0;flex:1;">
+            <label for="reminder-interval">Remind me every</label>
+            <select id="reminder-interval">
+              <option value="1">1 minute (demo)</option>
+              <option value="15">15 minutes</option>
+              <option value="30" selected>30 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="60">60 minutes</option>
+            </select>
+          </div>
+
+          <div class="hydration-actions">
+            <button class="btn btn-primary" id="start-reminder-btn" onclick="startReminder()">▶ Start</button>
+            <button class="btn btn-outline" id="stop-reminder-btn"  onclick="stopReminder()" style="display:none;">⏹ Stop</button>
+          </div>
+        </div>
+
+        <!-- Status indicator -->
+        <div class="reminder-status" id="reminder-status">
+          Reminder is <strong>off</strong>. Press Start to begin.
+        </div>
+
+        <!-- Glass tracker — powered by Closure -->
+        <div class="glass-tracker">
+          <div class="glass-count-wrap">
+            <span class="glass-icon">🥛</span>
+            <span class="glass-count" id="glass-count">0</span>
+            <span class="glass-label">glasses today</span>
+          </div>
+          <div class="glass-btns">
+            <button class="btn btn-primary" onclick="drinkGlass()">+ Drank a Glass</button>
+            <button class="btn btn-outline" onclick="resetGlasses()">↺ Reset</button>
+          </div>
+        </div>
+
+        <!-- Recommended intake note -->
+        <p class="result-tip" style="margin-top:16px;">
+          💡 Recommended daily intake: <strong>8–10 glasses</strong> (about 2–2.5 litres) for most adults.
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         SECTION 5 – HEALTH TIPS
+         SYLLABUS: Dynamic DOM Generation — createElement + appendChild
+                   (tips loaded from JS array, NOT hardcoded HTML)
+         ══════════════════════════════════════ -->
+    <section id="tips-section">
+      <h2 class="section-title">💡 Quick Health Tips</h2>
+      <p class="section-subtitle">Simple habits for a healthier everyday life</p>
+
+      <!-- Empty container — tips are injected by JS on page load -->
+      <div class="tips-grid" id="tips-grid"></div>
+    </section>
+
+  </div><!-- end .container -->
+
+  <footer>
+    <p><strong>NUTRICAL</strong> — Your Nutrition Companion</p>
+    <p class="mt-8">Data shown is approximate per 100g. Consult a dietitian for medical advice.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

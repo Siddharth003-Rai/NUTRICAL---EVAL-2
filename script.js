@@ -1,20 +1,9 @@
-// ════════════════════════════════════════════════════════════════════════
-//  NUTRICAL — script.js
-//  Syllabus map:
-//    ✅ ES6+ Syntax            — const/let, arrow functions, template literals
-//    ✅ Functions & Scoping    — all functions, closure for glass tracker
-//    ✅ Higher-Order Functions — Array.reduce(), Array.forEach(), Array.find()
-//    ✅ Destructuring          — object destructuring throughout
-//    ✅ JSON Handling          — JSON.parse / JSON.stringify for session
-//    ✅ DOM Manipulation       — createElement, appendChild, textContent, style
-//    ✅ Event Handling         — addEventListener, e.preventDefault, delegation
-//    ✅ BOM                    — window.location, setInterval, clearInterval, alert
-// ════════════════════════════════════════════════════════════════════════
 
 
-// ════════════════════════════════════════════════════════════════════════
+
+
 // 1. FOOD DATABASE
-// ════════════════════════════════════════════════════════════════════════
+
 
 const foodDB = {
   // ----- Fruits -----
@@ -78,10 +67,8 @@ const foodDB = {
 let currentFood = null;
 
 
-// ════════════════════════════════════════════════════════════════════════
+
 // 2. FOOD SEARCH
-//    SYLLABUS: Functions, DOM Manipulation
-// ════════════════════════════════════════════════════════════════════════
 
 function searchFood() {
   const query = document.getElementById('food-input').value.trim().toLowerCase();
@@ -122,11 +109,9 @@ document.getElementById('food-input').addEventListener('keydown', (e) => {
 });
 
 
-// ════════════════════════════════════════════════════════════════════════
+
 // 3. MY DAILY PLATE — Meal Tracker
-//    SYLLABUS: Higher-Order Functions (reduce), DOM Manipulation,
-//              Event Delegation (bubbling), Destructuring
-// ════════════════════════════════════════════════════════════════════════
+
 
 // Internal array that holds plate items
 let plateItems = [];
@@ -174,8 +159,7 @@ const renderPlate = () => {
     return;
   }
 
-  // Build each list item via DOM manipulation
-  // SYLLABUS: Higher-Order Function — forEach to iterate
+  
   plateItems.forEach(({ id, name, cal, pro, carb, fat }) => {
     const li = document.createElement('li');
     li.className    = 'plate-item';
@@ -197,7 +181,7 @@ const renderPlate = () => {
     list.appendChild(li);
   });
 
-  // ── SYLLABUS: Higher-Order Function — reduce() to sum all nutrients ──
+  
   const totalsData = plateItems.reduce(
     (acc, item) => ({
       cal:  acc.cal  + item.cal,
@@ -208,7 +192,7 @@ const renderPlate = () => {
     { cal: 0, pro: 0, carb: 0, fat: 0 }   // initial accumulator
   );
 
-  // SYLLABUS: Destructuring — unpack the result of reduce()
+  
   const { cal, pro, carb, fat } = totalsData;
 
   document.getElementById('total-cal').textContent  = cal.toFixed(1);
@@ -219,8 +203,7 @@ const renderPlate = () => {
   totals.style.display = 'block';
 };
 
-// ── SYLLABUS: Event Delegation — ONE listener on the parent list handles
-//              ALL delete button clicks via event.target + data attributes ──
+
 document.getElementById('plate-list').addEventListener('click', (e) => {
   // Check if the click actually hit a delete button (bubbling)
   if (e.target.classList.contains('plate-delete-btn')) {
@@ -231,10 +214,8 @@ document.getElementById('plate-list').addEventListener('click', (e) => {
 });
 
 
-// ════════════════════════════════════════════════════════════════════════
+
 // 4. BMI CALCULATOR
-//    SYLLABUS: Functions, DOM Manipulation
-// ════════════════════════════════════════════════════════════════════════
 
 function calculateBMI() {
   const weight = parseFloat(document.getElementById('weight-input').value);
@@ -292,16 +273,11 @@ function calculateBMI() {
 }
 
 
-// ════════════════════════════════════════════════════════════════════════
-// 5. HYDRATION REMINDER
-//    SYLLABUS: BOM — setInterval(), clearInterval(), alert()
-//              Closures & Scope Rules — glass counter lives inside a closure
-// ════════════════════════════════════════════════════════════════════════
 
-// ── CLOSURE: createGlassTracker ──────────────────────────────────────
-// The `glassCount` variable is private — it only exists inside this function's
-// scope. It is NOT a global variable, so it cannot be accidentally modified
-// from elsewhere. This is the power of closures!
+// 5. HYDRATION REMINDER
+//   
+
+
 const createGlassTracker = () => {
   let glassCount = 0;   // private state, hidden from global scope
 
@@ -340,9 +316,9 @@ const startReminder = () => {
   const mins = Number(document.getElementById('reminder-interval').value);
   const ms   = mins * 60 * 1000;
 
-  // SYLLABUS: BOM — setInterval fires a callback every `ms` milliseconds
+  
   reminderIntervalId = setInterval(() => {
-    // SYLLABUS: BOM — alert() is a Browser Object Model method on window
+    
     alert(`💧 Hydration Reminder!\nTime to drink a glass of water!\nYou've had ${glassTracker.getCount()} glass(es) today. Keep it up!`);
   }, ms);
 
@@ -353,7 +329,7 @@ const startReminder = () => {
 };
 
 const stopReminder = () => {
-  // SYLLABUS: BOM — clearInterval() to cancel the timer
+  
   clearInterval(reminderIntervalId);
   reminderIntervalId = null;
 
@@ -364,11 +340,8 @@ const stopReminder = () => {
 };
 
 
-// ════════════════════════════════════════════════════════════════════════
+
 // 6. DYNAMIC HEALTH TIPS
-//    SYLLABUS: DOM Manipulation — createElement, appendChild, textContent
-//              reading from a JS array (NOT hardcoded HTML)
-// ════════════════════════════════════════════════════════════════════════
 
 // Array of tip objects — the single source of truth
 const healthTips = [
@@ -382,11 +355,11 @@ const healthTips = [
   { icon: '🍽️', title: 'Watch Your Portions',   text: 'Eating the right amount matters as much as what you eat. Use smaller plates to help.' },
 ];
 
-// SYLLABUS: DOM Manipulation — dynamically build and append tip cards
+
 const renderTips = () => {
   const grid = document.getElementById('tips-grid');
 
-  // SYLLABUS: Higher-Order Function — forEach to iterate over tips array
+  
   healthTips.forEach(({ icon, title, text }) => {   // Destructuring each tip object
 
     // createElement — creates a <div> in memory
@@ -413,13 +386,11 @@ const renderTips = () => {
 };
 
 
-// ════════════════════════════════════════════════════════════════════════
+
 // 7. SESSION — BOM + JSON Handling
-//    SYLLABUS: BOM (window.location), JSON.parse, DOM Manipulation
-// ════════════════════════════════════════════════════════════════════════
 
 const loadSession = () => {
-  // SYLLABUS: JSON Handling — read session from localStorage
+ 
   const raw     = localStorage.getItem('nutrical_session');
   const session = raw ? JSON.parse(raw) : null;
 
@@ -428,7 +399,7 @@ const loadSession = () => {
   const greetingEl  = document.getElementById('nav-greeting');
 
   if (session) {
-    // SYLLABUS: Destructuring — pull name from session object
+    
     const { name } = session;
     greetingEl.textContent   = `👋 ${name}`;
     userBlock.style.display  = 'flex';
@@ -441,27 +412,26 @@ const loadSession = () => {
 
 const logout = () => {
   localStorage.removeItem('nutrical_session');
-  // SYLLABUS: BOM — window.location to reload/redirect
+  
   window.location.reload();
 };
 
 
-// ════════════════════════════════════════════════════════════════════════
-// 8. HELPERS
-// ════════════════════════════════════════════════════════════════════════
 
-// SYLLABUS: Arrow Function — concise single-expression function
+// 8. HELPERS
+
+
+
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 
-// ════════════════════════════════════════════════════════════════════════
+
 // 9. INITIALISATION — runs once when the page loads
-// ════════════════════════════════════════════════════════════════════════
 
 const init = () => {
-  renderTips();     // Dynamically inject health tips
-  loadSession();    // Show user greeting if logged in
-  renderPlate();    // Initialise empty plate
+  renderTips();     
+  loadSession();    
+  renderPlate();   
 };
 
 // SYLLABUS: Event Handling — DOMContentLoaded fires when HTML is parsed

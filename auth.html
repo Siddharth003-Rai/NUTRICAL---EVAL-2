@@ -157,7 +157,7 @@
 
     input:focus { border-color: var(--green); }
 
-    /* ── VALIDATION MESSAGES ── */
+    /* ── VALIDATION ── */
     .field-error {
       color: var(--red);
       font-size: 0.8rem;
@@ -370,9 +370,9 @@
         </div>
       </div><!-- end #main-auth-view -->
 
-      <!-- ══════════════════════════════════
+      <!-- 
            FORGOT PASSWORD VIEW
-           ══════════════════════════════════ -->
+            -->
       <div id="forgot-view" style="display:none;">
         <button class="back-link" onclick="showMainView()">← Back to Sign In</button>
         <h2>Reset <span>Password</span></h2>
@@ -398,9 +398,7 @@
   </footer>
 
   <script>
-    // ════════════════════════════════════════════════════════════
-    // SYLLABUS: ES6+ Syntax — const/let, Arrow Functions throughout
-    // ════════════════════════════════════════════════════════════
+    
 
     // ── TAB SWITCHING (DOM Manipulation) ──────────────────────
     const switchTab = (tab) => {
@@ -440,9 +438,9 @@
       document.getElementById(id).className = 'form-alert';
     };
 
-    // ════════════════════════════════════════════════════════════
-    // SYLLABUS: JSON Handling — localStorage with JSON.stringify / JSON.parse
-    // ════════════════════════════════════════════════════════════
+    // 
+    // JSON Handling — localStorage with JSON.stringify / JSON.parse
+    // 
 
     // Save a new user to localStorage
     const saveUser = (name, email, password) => {
@@ -462,9 +460,9 @@
       localStorage.setItem('nutrical_session', JSON.stringify({ name: user.name, email: user.email }));
     };
 
-    // ════════════════════════════════════════════════════════════
-    // SYLLABUS: Password Strength — ES6+ + DOM Manipulation
-    // ════════════════════════════════════════════════════════════
+    // 
+    //  Password Strength — ES6+ + DOM Manipulation
+    // 
     document.getElementById('signup-password').addEventListener('input', function () {
       const val = this.value;
       let score = 0;
@@ -485,23 +483,23 @@
         { pct: '100%', color: '#22c55e',      text: 'Strong' },
       ];
 
-      // SYLLABUS: Destructuring — pulling values from an object
+      //t
       const { pct, color, text } = levels[score];
       fill.style.width      = pct;
       fill.style.background = color;
       label.textContent     = text;
     });
 
-    // ════════════════════════════════════════════════════════════
-    // SYLLABUS: Event Handling — addEventListener('submit') + e.preventDefault()
-    // ════════════════════════════════════════════════════════════
+    // 
+    //  Event Handling — addEventListener('submit') + e.preventDefault()
+    //
 
     // ── SIGN IN FORM ──────────────────────────────────────────
     document.getElementById('signin-form').addEventListener('submit', (e) => {
       e.preventDefault(); // Prevent default page reload
       hideAlert('signin-alert');
 
-      // SYLLABUS: Destructuring — pull values from DOM
+      //  Destructuring — pull values from DOM
       const email    = document.getElementById('signin-email').value.trim();
       const password = document.getElementById('signin-password').value;
 
@@ -525,7 +523,7 @@
       saveSession(user);
       showAlert('signin-alert', `✅ Welcome back, ${user.name}! Redirecting…`, 'success');
 
-      // SYLLABUS: BOM — window.location to redirect after login
+      // BOM — window.location to redirect after login
       setTimeout(() => { window.location.href = 'index.html'; }, 1200);
     });
 

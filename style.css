@@ -626,7 +626,7 @@ footer {
 footer span { color: var(--green); }
 
 
-/* ── RESPONSIVE ─────────────────────────────────────────── */
+/* ── RESPONSIVE */
 
 @media (max-width: 768px) {
   nav { padding: 14px 20px; }
